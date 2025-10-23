@@ -65,7 +65,7 @@ while True:
         print()
 
         if (not tablero_maquina.get_quedan_barcos_por_hundir()):
-            print("HAS GANADO!!!")
+            print("HAS GANADO!!! No quedan más barcos por hundir")
             print()
             partida_terminada = True
             break
@@ -96,7 +96,7 @@ while True:
         print()
 
         if (not tablero_jugador.get_quedan_barcos_por_hundir()):
-            print("HAS PERDIDO!!!")
+            print("HAS PERDIDO!!! No te queda ningún barco a flote")
             partida_terminada = True
             break
 

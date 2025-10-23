@@ -52,40 +52,37 @@ class Barco:
         indice_top_left = [Utils.get_indice_fila(numero_fila_top_left), Utils.get_indice_columna(letra_columna_top_left)]
         tupla_indice_top_left = tuple(indice_top_left)
 
-        self.posiciones_en_tablero = [tupla_indice_top_left]
-        self.posiciones_tocadas_en_tablero = [False]
+        self.diccionario_posicion_en_tablero_vs_tocado = {tupla_indice_top_left: False}
 
         for i in range(1, eslora):
             if orientacion == Orientacion.HORIZONTAL:
                 nueva_tupla_indice = ((indice_top_left[0] + i, indice_top_left[1]))
-                self.posiciones_en_tablero.append(nueva_tupla_indice)
+                self.diccionario_posicion_en_tablero_vs_tocado[nueva_tupla_indice] = False
 
             elif orientacion == Orientacion.VERTICAL:
                 nueva_tupla_indice = ((indice_top_left[0], indice_top_left[1] + i))
-                self.posiciones_en_tablero.append(nueva_tupla_indice)
+                self.diccionario_posicion_en_tablero_vs_tocado[nueva_tupla_indice] = False
                 
-            self.posiciones_tocadas_en_tablero.append(False) # En la creación ningún barco está tocado
 
     ##############################################################################################
     
     def set_posicion_tocada(self, tupla_posicion: tuple):
-        barco_index = self.posiciones_en_tablero.index(tupla_posicion)
-        self.posiciones_tocadas_en_tablero[barco_index] = True
+        self.diccionario_posicion_en_tablero_vs_tocado[tupla_posicion] = True
 
     ##############################################################################################
     
     def get_esta_hundido(self):
-        return np.all(self.posiciones_tocadas_en_tablero) ## Si todas las posiciones están tocadas, esá hundido
+        for tocado in self.diccionario_posicion_en_tablero_vs_tocado.values():
+            if not tocado:
+                return False
+            
+        return True ## Si todas las posiciones están tocadas (value True), esá hundido
     
     ##############################################################################################
     
     def get_tuplas_de_posicion_tocadas(self):
-        tuplas_de_posicion_tocadas = []
 
-        for index,is_posicion_tocada in enumerate(self.posiciones_tocadas_en_tablero):
-            if is_posicion_tocada:
-                tupla_tocada = self.posiciones_en_tablero[index]
-                tuplas_de_posicion_tocadas.append(tupla_tocada)
+        tuplas_de_posicion_tocadas = [tupla for tupla, tocado_flag in self.diccionario_posicion_en_tablero_vs_tocado.items() if tocado_flag == True]
 
         return tuplas_de_posicion_tocadas
 
@@ -201,7 +198,8 @@ class Tablero:
                     self.add_barco(barco_aleatorio)
                     break ## Salir del bucle while para 
                 except Exception as e:
-                    print(e)
+                    pass
+                    #print(e)
 
     ##############################################################################################
 
@@ -274,7 +272,7 @@ class Tablero:
     
     def add_barco(self, barco: Barco):
         tablero_temporal = self.tablero.copy()
-        for fila_index,columna_index in barco.posiciones_en_tablero:
+        for fila_index,columna_index in barco.diccionario_posicion_en_tablero_vs_tocado.keys():
             try:
                 contenido_casilla = tablero_temporal[fila_index][columna_index] ## elevará excepción si no existe en el tablero; puede ocurrir cuando se intenta meter un barco de eslora grande con un punto de origen muy debajo a la derecha
 
