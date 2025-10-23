@@ -92,7 +92,7 @@ class Disparo:
         except:
             raise Exception("El numero de fila introducido debe ser numérico")
         
-        if 1 > numero_fila_int > tamano_tablero:
+        if 1 > numero_fila_int  or numero_fila_int > tamano_tablero:
             raise Exception("El número de fila introducida no puede ser menor de 1 ni mayor que el tamaño del tablero")
 
         self.fila_index = Utils.get_indice_fila(numero_fila_int)
