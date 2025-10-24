@@ -25,19 +25,25 @@ class Orientacion(Enum):
 ##############################################################################################
 
 class Casilla(Enum):
+    """
     AGUA = "O"
     TOCADO = "X"
     INCOGNITA = " "
     BARCO = "X"
+    """
+    AGUA = "🟢"
+    TOCADO = "❌"
+    INCOGNITA = "🟦"
+    BARCO = "❌"
 
 
 ##############################################################################################
 ##############################################################################################
 
 class ResultadoDisparo(Enum):
-    AGUA = "AGUA !!"
-    TOCADO = "TOCADO !!"
-    HUNDIDO = "HUNDIDO !!"
+    AGUA = "AGUAAAAAAAAAAAAAAAAA !!"
+    TOCADO = "TOCADOOOOOOOOOOOOOOOO !!"
+    HUNDIDO = "HUNDIDOOOOOOOOO !!"
 
 ##############################################################################################
 ##############################################################################################
@@ -242,7 +248,8 @@ class Tablero:
     ##############################################################################################
     
     def get_representacion_con_coordenadas(self, tablero: np.array):
-        vector_letras_columnas = self.get_vector_letras_columnas()
+        #vector_letras_columnas = self.get_vector_letras_columnas()
+        vector_letras_columnas = self.get_vector_letras_columnas() + " "
         array_2d_numeros_fila = self.get_array_2d_numeros_filas()
 
         tablero_con_columnas = np.vstack([vector_letras_columnas, tablero])
